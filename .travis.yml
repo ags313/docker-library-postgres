@@ -17,9 +17,6 @@ env:
   - VERSION=9.5
   - VERSION=9.5 FORCE_DEB_BUILD=1
   - VERSION=9.5 VARIANT=alpine
-  - VERSION=9.4
-  - VERSION=9.4 FORCE_DEB_BUILD=1
-  - VERSION=9.4 VARIANT=alpine
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
@@ -37,9 +34,9 @@ script:
       set -x
       if [ -n "${FORCE_DEB_BUILD:+x}" ]; then
         [ "$(dpkg --print-architecture)" = 'amd64' ]
-        grep -qE 'amd64[|]' Dockerfile
-        sed -ri -e 's/amd64[|]//g' Dockerfile
-        ! grep -qE 'amd64[|]' Dockerfile
+        grep -qE 'amd64 [|] ' Dockerfile
+        sed -ri -e 's/amd64 [|] //g' Dockerfile
+        ! grep -qE 'amd64 [|] ' Dockerfile
       fi
       docker build -t "$image" .
       ~/official-images/test/run.sh "$image"
